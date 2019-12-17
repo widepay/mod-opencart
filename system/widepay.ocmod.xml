@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Wide Pay Payment</name>
+    <version>1.0</version>
+    <author>Gabriel Pasche gabrielpasche@widepay.com</author>
+    <code>widepay-payment</code>
+    <description></description>
+
+    <file path="catalog/controller/checkout/success.php">
+        <operation>
+            <notes></notes>
+            <search index="" regex="false" trim="false"><![CDATA[$this->load->language('checkout/success');]]></search>
+            <add offset="0" trim="false" position="after"><![CDATA[
+if(isset($_GET['gateway']) && $_GET['gateway']=='widepay' && isset($_GET['link'])){
+		$data['widepay'] = true;
+		$data['widepay_link'] = $_GET['link'];
+}
+]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/view/theme/*/template/common/success.twig">
+        <operation>
+            <notes></notes>
+            <search index="" regex="false" trim="false"><![CDATA[{{ text_message }}]]></search>
+            <add offset="0" trim="false" position="replace"><![CDATA[
+{% if widepay %}
+<script>
+            window.open(
+                '{{widepay_link}}',
+                '_blank'
+            );</script>
+	<p>
+	<br>
+	<p>Seu pedido foi criado com sucesso e o status é: Aguardando. Clique no botão a baixo para realizar o pagamento.</p>
+            <a class='btn btn-success' target='_blank' href='{{widepay_link}}'>Pagar agora com Wide Pay</a>
+	</p>
+{% else %}
+	{{ text_message }}
+{% endif %}
+]]></add>
+        </operation>
+    </file>
+
+</modification>

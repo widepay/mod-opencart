@@ -1,0 +1,425 @@
+<!--
+* @package    Wide Pay
+* @version    1.0
+* @license    BSD License
+* @copyright  (c) 2019
+* @link       https://widepay.com/
+* @dev        Gabriel Pasche
+-->
+
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form-salvar" data-toggle="tooltip" title="{{ button_save }}"
+                        class="btn btn-primary">
+                    <i class="fa fa-save"></i>
+                </button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+                    <i class="fa fa-reply"></i>
+                </a>
+            </div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if (error_warning) %}
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if (salvo_com_sucesso) %}
+            <div class="alert alert-success"><i class="fa fa-check"></i> Dados do m&oacute;dulo salvos com sucesso!
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-salvar"
+                      class="form-horizontal">
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <img src="../image/widepay/logo.svg" width="250">
+                            <div style="margin-left: 0px;">
+                                <strong>Sobre</strong>: <a href="https://www.widepay.com/" target="_blank">https://www.widepay.com/</a><br>
+                                <strong>Acessar</strong>: <a href="https://www.widepay.com/acessar" target="_blank">https://www.widepay.com/acessar</a><br>
+                                <strong>Carteiras</strong>: <a
+                                        href="https://www.widepay.com/conta/configuracoes/carteiras" target="_blank">https://www.widepay.com/conta/configuracoes/carteiras</a><br>
+                                <strong>Guia</strong>: <a href="https://widepay.github.io/api/index.html"
+                                                          target="_blank">https://widepay.github.io/api/index.html</a><br>
+                                <strong>Ajuda</strong>: <a href="https://www.widepay.com/faq" target="_blank">https://www.widepay.com/faq</a>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_widepay_status" id="input-status" class="form-control">
+                                {% if (payment_widepay_status) %}
+                                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                                    <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                    <option value="1">{{ text_enabled }}</option>
+                                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_title">
+                            <span data-toggle="tooltip" title="{{ text_form_title_description }}">{{ text_form_title }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_widepay_title"
+                                   value="{{ payment_widepay_title }}" placeholder="{{ text_form_title_description }}"
+                                   id="input-payment_widepay_title" class="form-control"/>
+                            {% if (error_payment_widepay_title) %}
+                                <div class="text-danger">{{ error_payment_widepay_title }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_description">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_description_description }}">{{ text_form_description }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_widepay_description"
+                                   value="{{ payment_widepay_description }}"
+                                   placeholder="{{ text_form_description_description }}"
+                                   id="input-payment_widepay_description" class="form-control"/>
+                            {% if (error_payment_widepay_description) %}
+                                <div class="text-danger">{{ error_payment_widepay_description }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+{#                    <div class="form-group required">#}
+{#                        <label class="col-sm-2 control-label" for="input-payment_widepay_item_name">#}
+{#                            <span data-toggle="tooltip"#}
+{#                                  title="{{ text_form_item_name_description }}">{{ text_form_item_name }}#}
+{#                            </span>#}
+{#                        </label>#}
+{#                        <div class="col-sm-10">#}
+{#                            <input type="text" name="payment_widepay_item_name"#}
+{#                                   value="{{ payment_widepay_item_name }}"#}
+{#                                   placeholder="{{ text_form_item_name_description }}"#}
+{#                                   id="input-payment_widepay_item_name" class="form-control"/>#}
+{#                            {% if (error_payment_widepay_item_name) %}#}
+{#                                <div class="text-danger">{{ error_payment_widepay_item_name }}</div>#}
+{#                            {% endif %}#}
+{#                        </div>#}
+{#                    </div>#}
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_wallet_id">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_wallet_id_description }}">{{ text_form_wallet_id }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_widepay_wallet_id"
+                                   value="{{ payment_widepay_wallet_id }}"
+                                   placeholder="{{ text_form_wallet_id_description }}"
+                                   id="input-payment_widepay_wallet_id" class="form-control"/>
+                            {% if (error_payment_widepay_wallet_id) %}
+                                <div class="text-danger">{{ error_payment_widepay_wallet_id }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_wallet_token">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_wallet_token_description }}">{{ text_form_wallet_token }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_widepay_wallet_token"
+                                   value="{{ payment_widepay_wallet_token }}"
+                                   placeholder="{{ text_form_wallet_token_description }}"
+                                   id="input-payment_widepay_wallet_token" class="form-control"/>
+                            {% if (error_payment_widepay_wallet_token) %}
+                                <div class="text-danger">{{ error_payment_widepay_wallet_token }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_tax">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_tax_description }}">{{ text_form_tax }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_widepay_tax"
+                                   value="{{ payment_widepay_tax }}"
+                                   placeholder="{{ text_form_tax_description }}"
+                                   id="input-payment_widepay_tax" class="form-control"/>
+                            {% if (error_tax) %}
+                                <div class="text-danger">{{ error_tax }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_tax_type">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_tax_type_description }}">{{ text_form_tax_type }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <select name="payment_widepay_tax_type" id="input-payment_widepay_tax_type"
+                                    class="form-control">
+                                {% for key,campo in payment_widepay_tax_type_select %}
+                                    {% if (key == payment_widepay_tax_type) %}
+                                        <option value="{{ key }}"
+                                                selected="selected">{{ campo }}</option>
+                                    {% else %}
+                                        <option value="{{ key }}">{{ campo }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_plus_date_due">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_plus_date_due_description }}">{{ text_form_plus_date_due }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_widepay_plus_date_due"
+                                   value="{{ payment_widepay_plus_date_due }}"
+                                   placeholder="{{ text_form_plus_date_due_description }}"
+                                   id="input-payment_widepay_plus_date_due" class="form-control"/>
+                            {% if (error_payment_widepay_plus_date_due) %}
+                                <div class="text-danger">{{ error_payment_widepay_plus_date_due }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_fine">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_fine_description }}">{{ text_form_fine }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_widepay_fine"
+                                   value="{{ payment_widepay_fine }}"
+                                   placeholder="{{ text_form_fine_description }}"
+                                   id="input-payment_widepay_fine" class="form-control"/>
+                            {% if (error_payment_widepay_fine) %}
+                                <div class="text-danger">{{ error_payment_widepay_fine }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_interest">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_interest_description }}">{{ text_form_interest }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_widepay_interest"
+                                   value="{{ payment_widepay_interest }}"
+                                   placeholder="{{ text_form_interest_description }}"
+                                   id="input-payment_widepay_interest" class="form-control"/>
+                            {% if (error_payment_widepay_interest) %}
+                                <div class="text-danger">{{ error_payment_widepay_interest }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_way">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_way_description }}">{{ text_form_way }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <select name="payment_widepay_way" id="input-payment_widepay_way"
+                                    class="form-control">
+                                {% for key,campo in payment_widepay_way_select %}
+                                    {% if (key == payment_widepay_way) %}
+                                        <option value="{{ key }}"
+                                                selected="selected">{{ campo }}</option>
+                                    {% else %}
+                                        <option value="{{ key }}">{{ campo }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_cpf_field">
+                             <span data-toggle="tooltip"
+                                   title="{{ text_form_cpf_field_description }}">{{ text_form_cpf_field }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <select name="payment_widepay_cpf_field" id="input-payment_widepay_cpf_field"
+                                    class="form-control">
+                                <option value="0" selected="selected">Cliente digita manualmente</option>
+                                {% for campo in campos %}
+                                    {% if (campo['custom_field_id'] == payment_widepay_cpf_field) %}
+                                        <option value="{{ campo['custom_field_id'] }}"
+                                                selected="selected">{{ campo['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ campo['custom_field_id'] }}">{{ campo['name'] }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_cnpj_field">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_cnpj_field_description }}">{{ text_form_cnpj_field }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <select name="payment_widepay_cnpj_field" id="input-payment_widepay_cnpj_field"
+                                    class="form-control">
+                                <option value="0" selected="selected">Cliente digita manualmente</option>
+                                {% for campo in campos %}
+                                    {% if (campo['custom_field_id'] == payment_widepay_cnpj_field) %}
+                                        <option value="{{ campo['custom_field_id'] }}"
+                                                selected="selected">{{ campo['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ campo['custom_field_id'] }}">{{ campo['name'] }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_number_field">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_number_field_description }}">{{ text_form_number_field }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <select name="payment_widepay_number_field" id="input-payment_widepay_number_field"
+                                    class="form-control">
+                                <option value="0" selected="selected">Escrito junto ao logradouro pelo cliente</option>
+                                {% for campo in campos %}
+                                    {% if (campo['custom_field_id'] == payment_widepay_number_field) %}
+                                        <option value="{{ campo['custom_field_id'] }}"
+                                                selected="selected">{{ campo['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ campo['custom_field_id'] }}">{{ campo['name'] }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_complement_field">
+                            <span data-toggle="tooltip"
+                                  title="{{ text_form_complement_field_description }}">{{ text_form_complement_field }}
+                            </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <select name="payment_widepay_complement_field" id="input-payment_widepay_complement_field"
+                                    class="form-control">
+                                <option value="0" selected="selected">N&atilde;o usar este campo</option>
+                                {% for campo in campos %}
+                                    {% if (campo['custom_field_id'] == payment_widepay_complement_field) %}
+                                        <option value="{{ campo['custom_field_id'] }}"
+                                                selected="selected">{{ campo['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ campo['custom_field_id'] }}">{{ campo['name'] }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_status_waiting_payment">{{ text_form_status_waiting_payment }}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_widepay_status_waiting_payment" id="input-payment_widepay_status_waiting_payment"
+                                    class="form-control">
+                                {% for order_status in order_statuses %}
+                                    {% if (order_status['order_status_id'] == payment_widepay_status_waiting_payment) %}
+                                        <option value="{{ order_status['order_status_id'] }}"
+                                                selected="selected">{{ order_status['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ order_status['order_status_id'] }}">{{ order_status['name'] }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_status_payed">{{ text_form_status_payed }}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_widepay_status_payed" id="input-payment_widepay_status_payed"
+                                    class="form-control">
+                                {% for order_status in order_statuses %}
+                                    {% if (order_status['order_status_id'] == payment_widepay_status_payed) %}
+                                        <option value="{{ order_status['order_status_id'] }}"
+                                                selected="selected">{{ order_status['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ order_status['order_status_id'] }}">{{ order_status['name'] }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-payment_widepay_status_cancelled">{{text_form_status_payment_cancelled}}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_widepay_status_cancelled" id="input-payment_widepay_status_cancelled"
+                                    class="form-control">
+                                {% for order_status in order_statuses %}
+                                    {% if (order_status['order_status_id'] == payment_widepay_status_cancelled) %}
+                                        <option value="{{ order_status['order_status_id'] }}"
+                                                selected="selected">{{ order_status['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ order_status['order_status_id'] }}">{{ order_status['name'] }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-geo-zone">Zonas</label>
+                        <div class="col-sm-10">
+                            <select name="payment_widepay_geo_zone_id" id="input-geo-zone" class="form-control">
+                                <option value="0">{{ text_all_zones }}</option>
+                                {% for geo_zone in geo_zones %}
+                                    {% if (geo_zone['geo_zone_id'] == payment_widepay_geo_zone_id) %}
+                                        <option value="{{ geo_zone['geo_zone_id'] }}"
+                                                selected="selected">{{ geo_zone['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ geo_zone['geo_zone_id'] }}">{{ geo_zone['name'] }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_widepay_sort_order"
+                                   value="{{ payment_widepay_sort_order }}" placeholder="{{ entry_sort_order }}"
+                                   id="input-sort-order" class="form-control"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }}
